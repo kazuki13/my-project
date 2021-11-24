@@ -4,10 +4,9 @@
     <div id="lightgallery">
       <a href=".\assets\logo.png">
         <img src=".\assets\logo.png" width="100" height="100" />
-        
       </a>
     </div>
-    
+
   </div>
 </template>
 import 'lightgallery.js'
