@@ -7,6 +7,7 @@
         
       </a>
     </div>
+    
   </div>
 </template>
 import 'lightgallery.js'
