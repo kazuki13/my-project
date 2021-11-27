@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <v-gallery :assets="list"></v-gallery>
+
    
     <HelloWorld msg="Welcome to Your Vue.js App"/>
   </div>
@@ -8,7 +8,7 @@
 
 
 <script>
-import HelloWorld from './components/Vue.vue'
+import HelloWorld from './components/HelloWorld.vue'
 
 
 export default {

@@ -1,26 +1,14 @@
 
-<template>
-  <div class="app-container">
-    <div id="lightgallery">
-      <a href=".\assets\logo.png">
-        <img src=".\assets\logo.png" width="100" height="100" />
-      </a>
+<div id="app">
+    <div class="drop_area" @dragenter="dragEnter" @dragleave="dragLeave" @dragover.prevent @drop.prevent="dropFile" :class="{enter: isEnter}">
+        ファイルアップロード
     </div>
+</div>
 
-  </div>
-</template>
-import 'lightgallery.js'
-import 'lightgallery.js/dist/css/lightgallery.css'
 
-export default {
-  name: 'IssueDetail',
-  data() {
-    return {
-      imageList: []
+methods: {
+    dragEnter() {
+        console.log('Enter Drop Area');
     }
-  },
-  mounted() {
-    const el = document.getElementById('lightgallery')
-    window.lightGallery(el)
-  }
 }
+
