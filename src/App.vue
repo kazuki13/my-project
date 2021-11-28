@@ -1,21 +1,18 @@
 <template>
   <div id="app">
-
-   
     <HelloWorld msg="Welcome to Your Vue.js App"/>
   </div>
 </template>
 
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import HelloWorld from './components/uplode.vue'
 
 
 export default {
   name: 'App',
   components: {
     HelloWorld
-    
   }
 }
 </script>
@@ -28,5 +25,8 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+  .enter {
+    Sborder: 10px dotted powderblue;
+  }
 }
 </style>
