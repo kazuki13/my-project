@@ -1,6 +1,11 @@
+<template>
+    <div class="drop_area">
+     ファイルアップロード
+    </div>
+</template>
+<x-invalid-end-tag>
 <div id="app">
-    <div class="drop_area" @dragenter="dragEnter" @dragleave="dragLeave" @dragover.prevent @drop.prevent="dropFile"
-        :class="{enter: isEnter}">
+    <div class="drop_area" @dragenter="dragEnter" @dragleave="dragLeave" @dragover.prevent @drop.prevent="dropFile" :class="{enter: isEnter}">
         ファイルアップロード
     </div>
     <div>
@@ -11,6 +16,7 @@
     </div>
 </div>
 
+<script>
 const app = new Vue({
     el: "#app",
     data: {
@@ -30,6 +36,7 @@ const app = new Vue({
         }
     }
 })
+</script>
 <style>
     .enter {
         border: 10px dotted powderblue;
