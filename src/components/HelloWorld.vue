@@ -46,8 +46,8 @@
         let context = this.canvas.getContext("2d")
         context.drawImage(this.video, 0, 0, 400, 240)
         this.captures.push(this.canvas.toDataURL("image/png")) //撮った画像をcaptures配列に格納する
-        let subscriptionKey = "68b45082f3c44c9288802ea2521d7fbb";
-        let uriBase = "https://kao.cognitiveservices.azure.com/face/v1.0/detect";
+        let subscriptionKey = "";
+        let uriBase = ".com/face/v1.0/detect";
         // let params = {
         //   "returnFaceId": "true",
         //   "returnFaceLandmarks": "false",
