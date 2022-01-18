@@ -82,7 +82,22 @@ function camvas(ctx, callback) {
 			var context = canvasElement.getContext('2d');
 
 			context.drawImage(videoElement, 0, 0, videoElement.width, videoElement.height);
-			document.querySelector('img').src = canvasElement.toDataURL('image/png');		
+			let image = document.querySelector('img').src = canvasElement.toDataURL('image/png');
+
+			// debug
+			console.log(image)
+
+			const image_data = fs.readFileSync(image);
+
+			const filename = "test.png";
+			const type = image.match(/image\/.+?(?=;)/)[0];
+			const bin = atob(image.replace(/^.*,/, ''));
+			const buffer = new Uint8Array(bin.length).map((x, y) => bin.charCodeAt(y));
+			const blob = new Blob([buffer.buffer], {type});
+			method = "post";
+			const body = new FormData();
+			body.append("test", blob, filename);
+			fetch(url, {method,body}).then(res=>res.text()).then(console.log);
 		}
 			
 		var initialized = false;
@@ -201,18 +216,18 @@ function camvas(ctx, callback) {
 						// 	ctx.strokeStyle = 'red';
 						// 	ctx.stroke();
 						// }
-						setInterval(async () => {
-							const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks()
-							.withFaceExpressions()
-							const resizedDetections = faceapi.resizeResults(detections,
-							displaySize)
-							canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
-							faceapi.draw.drawDetections(canvas, resizedDetections)
-							faceapi.draw.withFaceLandmarks(canvas, resizeResults)
-						}, 100)
-                        // snapshot();
+						// setInterval(async () => {
+						// 	const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks()
+						// 	.withFaceExpressions()
+						// 	const resizedDetections = faceapi.resizeResults(detections,
+						// 	displaySize)
+						// 	canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
+						// 	faceapi.draw.drawDetections(canvas, resizedDetections)
+						// 	faceapi.draw.withFaceLandmarks(canvas, resizeResults)
+						// }, 100)
+                        snapshot();
                        
-                        // sleep(8000);
+                        sleep(8000);
 
 					}
 			}
