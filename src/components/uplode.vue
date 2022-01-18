@@ -3,7 +3,7 @@
 
 
 
-
+<script src ="./assets/js/pico.js"></script>
 
 // <script>
 
@@ -23,7 +23,7 @@
 // async function main() {
 //   // Enter your storage account name and shared key
 //   const account = process.env.ACCOUNT_NAME || "kaopass2";
-//   const accountKey = process.env.ACCOUNT_KEY || "ETuD27jryBN3Ytt3DAXxYaQX0/qgr3D8OAzJlKzN2w1K4nPnytpjsxhtJ7bIM6Rknd7ke5vMlswigxrIvW5LlA==";
+//   const accountKey = process.env.ACCOUNT_KEY || "";
 
 //   const sharedKeyCredential = new StorageSharedKeyCredential(account, accountKey);
 //   const blobServiceClient = new BlobServiceClient(
@@ -56,7 +56,7 @@
       <hr>
       <html>
         <body>
-          <p><center><input type="button" value="Start webcam feed" onclick="main()"></center></p>
+          <p><center><input type="button" value="Start webcam feed" onclick="button_callback()"></center></p>
           <p><center><canvas width=640 height=480></canvas></center></p>
           
         </body>
