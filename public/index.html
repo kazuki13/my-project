@@ -82,9 +82,9 @@ function camvas(ctx, callback) {
 			var context = canvasElement.getContext('2d');
 
 			context.drawImage(videoElement, 0, 0, videoElement.width, videoElement.height);
-			// document.querySelector('img').src = canvasElement.toDataURL('image/png');
+			document.querySelector('img').src = canvasElement.toDataURL('image/png');		
 		}
-
+			
 		var initialized = false;
 		function button_callback() {
 			/*
@@ -201,9 +201,18 @@ function camvas(ctx, callback) {
 						// 	ctx.strokeStyle = 'red';
 						// 	ctx.stroke();
 						// }
-                        snapshot();
+						setInterval(async () => {
+							const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks()
+							.withFaceExpressions()
+							const resizedDetections = faceapi.resizeResults(detections,
+							displaySize)
+							canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
+							faceapi.draw.drawDetections(canvas, resizedDetections)
+							faceapi.draw.withFaceLandmarks(canvas, resizeResults)
+						}, 100)
+                        // snapshot();
                        
-                        sleep(8000);
+                        // sleep(8000);
 
 					}
 			}
@@ -229,6 +238,8 @@ function camvas(ctx, callback) {
 		<strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
 		</noscript>
 		<div id="app"></div>
+		<img/>
+		<canvas style="display: none" width="320" height="240"></canvas>
 		<!-- built files will be auto injected -->
 	</body>
 </html>

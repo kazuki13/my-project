@@ -20,9 +20,14 @@
         <body>
           <p><center><input type="button" value="Start webcam feed" onclick="button_callback()"></center></p>
           <p><center><canvas width=640 height=480></canvas></center></p>
-          
+          <canvas id="videoElement" width="300" height="300" ></canvas>
         </body>
+
       </html>
+
+
+
+
     </div>
      
 </template>
