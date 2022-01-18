@@ -3,217 +3,221 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <!-- <meta name="viewport" content="width=device-width,initial-scale=1.0"> -->
-    <!-- <link rel="icon" href="<%= BASE_URL %>favicon.ico"> -->
-	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
-    <link rel="stylesheet" href="./css/normalize.css">
-    <link rel="stylesheet" href="./css/style.css">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0"> 
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+
     <title><%= htmlWebpackPlugin.options.title %></title>
 	<!-- <script src ="../src/components/assets/js/up.js"></script> -->
   </head>
+
+
   <!-- <script src = "../src/components/assets/js/pico.js"></script> -->
   <script>
-	  
-	//   function camvas(ctx, callback) {
-	// 		var self = this
-	// 		this.ctx = ctx
-	// 		this.callback = callback
+	
+function camvas(ctx, callback) {
+    var self = this
+    this.ctx = ctx
+    this.callback = callback
+  
+    // We can't `new Video()` yet, so we'll resort to the vintage
+    // "hidden div" hack for dynamic loading.
+    var streamContainer = document.createElement('div')
+    this.video = document.createElement('video')
+  
+    // If we don't do this, the stream will not be played.
+    // By the way, the play and pause controls work as usual 
+    // for streamed videos.
+    this.video.setAttribute('autoplay', '1')
+    this.video.setAttribute('playsinline', '1') // important for iPhones
+  
+    // The video should fill out all of the canvas
+    this.video.setAttribute('width', 1)
+    this.video.setAttribute('height', 1)
+  
+    streamContainer.appendChild(this.video)
+    document.body.appendChild(streamContainer)
+  
+    // The callback happens when we are starting to stream the video.
+    navigator.mediaDevices.getUserMedia({video: true, audio: false}).then(function(stream) {
+      // Yay, now our webcam input is treated as a normal video and
+      // we can start having fun
+      self.video.srcObject = stream
+      // Let's start drawing the canvas!
+      self.update()
+    }, function(err) {
+      throw err
+    })
+  
+    // As soon as we can draw a new frame on the canvas, we call the `draw` function 
+    // we passed as a parameter.
+    this.update = function() {
+      var self = this
+      var last = Date.now()
+      var loop = function() {
+        // For some effects, you might want to know how much time is passed
+        // since the last frame; that's why we pass along a Delta time `dt`
+        // variable (expressed in milliseconds)
+        var dt = Date.now() - last
+        self.callback(self.video, dt)
+        last = Date.now()
+        requestAnimationFrame(loop) 
+      }
+      requestAnimationFrame(loop) 
+    } 
+  }
+//今日の日付データを変数に格納
+		//変数は"today"とする
+		function sleep(waitMsec) {
+		var startMsec = new Date();
 		
-	// 		// We can't `new Video()` yet, so we'll resort to the vintage
-	// 		// "hidden div" hack for dynamic loading.
-	// 		var streamContainer = document.createElement('div')
-	// 		this.video = document.createElement('video')
+		// 指定ミリ秒間だけループさせる（CPUは常にビジー状態）
+		while (new Date() - startMsec < waitMsec);
+		}
 		
-	// 		// If we don't do this, the stream will not be played.
-	// 		// By the way, the play and pause controls work as usual 
-	// 		// for streamed videos.
-	// 		this.video.setAttribute('autoplay', '1')
-	// 		this.video.setAttribute('playsinline', '1') // important for iPhones
-		
-	// 		// The video should fill out all of the canvas
-	// 		this.video.setAttribute('width', 1)
-	// 		this.video.setAttribute('height', 1)
-		
-	// 		streamContainer.appendChild(this.video)
-	// 		document.body.appendChild(streamContainer)
-		
-	// 		// The callback happens when we are starting to stream the video.
-	// 		navigator.mediaDevices.getUserMedia({video: true, audio: false}).then(function(stream) {
-	// 		// Yay, now our webcam input is treated as a normal video and
-	// 		// we can start having fun
-	// 		self.video.srcObject = stream
-	// 		// Let's start drawing the canvas!
-	// 		self.update()
-	// 		}, function(err) {
-	// 		throw err
-	// 		})
-		
-	// 		// As soon as we can draw a new frame on the canvas, we call the `draw` function 
-	// 		// we passed as a parameter.
-	// 		this.update = function() {
-	// 		var self = this
-	// 		var last = Date.now()
-	// 		var loop = function() {
-	// 			// For some effects, you might want to know how much time is passed
-	// 			// since the last frame; that's why we pass along a Delta time `dt`
-	// 			// variable (expressed in milliseconds)
-	// 			var dt = Date.now() - last
-	// 			self.callback(self.video, dt)
-	// 			last = Date.now()
-	// 			requestAnimationFrame(loop) 
-	// 		}
-	// 		requestAnimationFrame(loop) 
-	// 		} 
-	// 	}
-	// function sleep(waitMsec) {
-	// 	var startMsec = new Date();
-		
-	// 	// 指定ミリ秒間だけループさせる（CPUは常にビジー状態）
-	// 	while (new Date() - startMsec < waitMsec);
-	// }
-	// function snapshot() {
-	// 	console.info('スナップショットをとるよ！');
+		function snapshot() {
+			console.info('スナップショットをとるよ！');
 
-	// 	var videoElement = document.querySelector('video');
-	// 	var canvasElement = document.querySelector('canvas');
-	// 	var context = canvasElement.getContext('2d');
+			var videoElement = document.querySelector('video');
+			var canvasElement = document.querySelector('canvas');
+			var context = canvasElement.getContext('2d');
 
-	// 	context.drawImage(videoElement, 0, 0, videoElement.width, videoElement.height);
-	// 	// document.querySelector('img').src = canvasElement.toDataURL('image/webp');
-	// }
+			context.drawImage(videoElement, 0, 0, videoElement.width, videoElement.height);
+			// document.querySelector('img').src = canvasElement.toDataURL('image/png');
+		}
 
-	// var initialized = false;
-	// function button_callback() {
-	// 	/*
-	// 		(0) check whether we're already running face detection
-	// 	*/
-	// 	if(initialized)
-	// 		return; // if yes, then do not initialize everything again
-	// 	/*
-	// 		(1) initialize the pico.js face detector
-	// 	*/
-	// 	var update_memory = pico.instantiate_detection_memory(5); // we will use the detecions of the last 5 frames
-	// 	var facefinder_classify_region = function(r, c, s, pixels, ldim) {return -1.0;};
-	// 	var cascadeurl = 'https://raw.githubusercontent.com/nenadmarkus/pico/c2e81f9d23cc11d1a612fd21e4f9de0921a5d0d9/rnt/cascades/facefinder';
-	// 	fetch(cascadeurl).then(function(response) {
-	// 		response.arrayBuffer().then(function(buffer) {
-	// 			var bytes = new Int8Array(buffer);
-	// 			facefinder_classify_region = pico.unpack_cascade(bytes);
-	// 			console.log('* facefinder loaded');
-	// 		})
-	// 	})
-	// 	/*
-	// 		(2) initialize the lploc.js library with a pupil localizer
-	// 	*/
-	// 	var do_puploc = function(r, c, s, nperturbs, pixels, nrows, ncols, ldim) {return [-1.0, -1.0];};
-	// 	var puplocurl = 'https://drone.nenadmarkus.com/data/blog-stuff/puploc.bin'
-	// 	fetch(puplocurl).then(function(response) {
-	// 		response.arrayBuffer().then(function(buffer) {
-	// 			var bytes = new Int8Array(buffer);
-	// 			console.log('* puploc loaded');
-	// 		})
-	// 	})
-	// 	/*
-	// 		(3) get the drawing context on the canvas and define a function to transform an RGBA image to grayscale
-	// 	*/
-	// 	var ctx = document.getElementsByTagName('canvas')[0].getContext('2d');
-	// 	function rgba_to_grayscale(rgba, nrows, ncols) {
-	// 		var gray = new Uint8Array(nrows*ncols);
-	// 		for(var r=0; r<nrows; ++r)
-	// 			for(var c=0; c<ncols; ++c)
-	// 				// gray = 0.2*red + 0.7*green + 0.1*blue
-	// 				gray[r*ncols + c] = (2*rgba[r*4*ncols+4*c+0]+7*rgba[r*4*ncols+4*c+1]+1*rgba[r*4*ncols+4*c+2])/10;
-	// 		return gray;
-	// 	}
-	// 	/*
-	// 		(4) this function is called each time a video frame becomes available
-	// 	*/
-	// 	var processfn = function(video, dt) {
-	// 		// render the video frame to the canvas element and extract RGBA pixel data
-	// 		ctx.drawImage(video, 0, 0);
-	// 		var rgba = ctx.getImageData(0, 0, 640, 480).data;
-	// 		// prepare input to `run_cascade`
-	// 		image = {
-	// 			"pixels": rgba_to_grayscale(rgba, 480, 640),
-	// 			"nrows": 480,
-	// 			"ncols": 640,
-	// 			"ldim": 640
-	// 		}
-	// 		params = {
-	// 			"shiftfactor": 0.1, // move the detection window by 10% of its size
-	// 			"minsize": 100,     // minimum size of a face
-	// 			"maxsize": 1000,    // maximum size of a face
-	// 			"scalefactor": 1.1  // for multiscale processing: resize the detection window by 10% when moving to the higher scale
-	// 		}
-	// 		// run the cascade over the frame and cluster the obtained detections
-	// 		// dets is an array that contains (r, c, s, q) quadruplets
-	// 		// (representing row, column, scale and detection score)
-	// 		dets = pico.run_cascade(image, facefinder_classify_region, params);
-	// 		dets = update_memory(dets);
-	// 		dets = pico.cluster_detections(dets, 0.2); // set IoU threshold to 0.2
-	// 		// draw detections
-	// 		for(i=0; i<dets.length; ++i)
-	// 			// check the detection score
-	// 			// if it's above the threshold, draw it
-	// 			// (the constant 50.0 is empirical: other cascades might require a different one)
-	// 			if(dets[i][3]>80.0)
-	// 			{
-	// 				var r, c, s;
-	// 				//ctx.beginPath();
-	// 				//ctx.arc(dets[i][1], dets[i][0], dets[i][2]/2, 0, 2*Math.PI, false);
-	// 				//ctx.lineWidth = 3;
-	// 				//ctx.strokeStyle = 'red';
-	// 				//ctx.stroke();
-	// 				//
-					
-	// 				//
-	// 				// find the eye pupils for each detected face
-	// 				// starting regions for localization are initialized based on the face bounding box
-	// 				// (parameters are set empirically)
-	// 				// first eye
-	// 				r = dets[i][0] - 0.075*dets[i][2];
-	// 				c = dets[i][1] - 0.175*dets[i][2];
-	// 				s = 0.35*dets[i][2];
-	// 				[r, c] = do_puploc(r, c, s, 63, image)
-	// 				if(r>=0 && c>=0)
-	// 				{
-	// 					ctx.beginPath();
-	// 					ctx.arc(c, r, 1, 0, 2*Math.PI, false);
-	// 					ctx.lineWidth = 3;
-	// 					ctx.strokeStyle = 'red';
-	// 					ctx.stroke();
+		var initialized = false;
+		function button_callback() {
+			/*
+				(0) check whether we're already running face detection
+			*/
+			if(initialized)
+				return; // if yes, then do not initialize everything again
+			/*
+				(1) initialize the pico.js face detector
+			*/
+			var update_memory = pico.instantiate_detection_memory(5); // we will use the detecions of the last 5 frames
+			var facefinder_classify_region = function(r, c, s, pixels, ldim) {return -1.0;};
+			var cascadeurl = 'https://raw.githubusercontent.com/nenadmarkus/pico/c2e81f9d23cc11d1a612fd21e4f9de0921a5d0d9/rnt/cascades/facefinder';
+			fetch(cascadeurl).then(function(response) {
+				response.arrayBuffer().then(function(buffer) {
+					var bytes = new Int8Array(buffer);
+					facefinder_classify_region = pico.unpack_cascade(bytes);
+					console.log('* facefinder loaded');
+				})
+			})
+			/*
+				(2) initialize the lploc.js library with a pupil localizer
+			*/
+			var do_puploc = function(r, c, s, nperturbs, pixels, nrows, ncols, ldim) {return [-1.0, -1.0];};
+			var puplocurl = 'https://drone.nenadmarkus.com/data/blog-stuff/puploc.bin'
+			fetch(puplocurl).then(function(response) {
+				response.arrayBuffer().then(function(buffer) {
+					var bytes = new Int8Array(buffer);
+					console.log('* puploc loaded');
+				})
+			})
+			/*
+				(3) get the drawing context on the canvas and define a function to transform an RGBA image to grayscale
+			*/
+			var ctx = document.getElementsByTagName('canvas')[0].getContext('2d');
+			function rgba_to_grayscale(rgba, nrows, ncols) {
+				var gray = new Uint8Array(nrows*ncols);
+				for(var r=0; r<nrows; ++r)
+					for(var c=0; c<ncols; ++c)
+						// gray = 0.2*red + 0.7*green + 0.1*blue
+						gray[r*ncols + c] = (2*rgba[r*4*ncols+4*c+0]+7*rgba[r*4*ncols+4*c+1]+1*rgba[r*4*ncols+4*c+2])/10;
+				return gray;
+			}
+			/*
+				(4) this function is called each time a video frame becomes available
+			*/
+			var processfn = function(video, dt) {
+				// render the video frame to the canvas element and extract RGBA pixel data
+				ctx.drawImage(video, 0, 0);
+				var rgba = ctx.getImageData(0, 0, 640, 480).data;
+				// prepare input to `run_cascade`
+				image = {
+					"pixels": rgba_to_grayscale(rgba, 480, 640),
+					"nrows": 480,
+					"ncols": 640,
+					"ldim": 640
+				}
+				params = {
+					"shiftfactor": 0.1, // move the detection window by 10% of its size
+					"minsize": 100,     // minimum size of a face
+					"maxsize": 1000,    // maximum size of a face
+					"scalefactor": 1.1  // for multiscale processing: resize the detection window by 10% when moving to the higher scale
+				}
+				// run the cascade over the frame and cluster the obtained detections
+				// dets is an array that contains (r, c, s, q) quadruplets
+				// (representing row, column, scale and detection score)
+				dets = pico.run_cascade(image, facefinder_classify_region, params);
+				dets = update_memory(dets);
+				dets = pico.cluster_detections(dets, 0.2); // set IoU threshold to 0.2
+				// draw detections
+				for(i=0; i<dets.length; ++i)
+					// check the detection score
+					// if it's above the threshold, draw it
+					// (the constant 50.0 is empirical: other cascades might require a different one)
+					if(dets[i][3]>60.0)
+					{
+						// var r, c, s;
+						// ctx.beginPath();
+						// ctx.arc(dets[i][1], dets[i][0], dets[i][2]/2, 0, 2*Math.PI, false);
+						// ctx.lineWidth = 3;
+						// ctx.strokeStyle = 'red';
+						// ctx.stroke();
+						//
 						
-						
-	// 				}
-	// 				// second eye
-	// 				r = dets[i][0] - 0.075*dets[i][2];
-	// 				c = dets[i][1] + 0.175*dets[i][2];
-	// 				s = 0.35*dets[i][2];
-	// 				[r, c] = do_puploc(r, c, s, 63, image)
-	// 				if(r>=0 && c>=0)
-	// 				{
-	// 					ctx.beginPath();
-	// 					ctx.arc(c, r, 1, 0, 2*Math.PI, false);
-	// 					ctx.lineWidth = 3;
-	// 					ctx.strokeStyle = 'red';
-	// 					ctx.stroke();
-	// 				}
-	// 				snapshot();
-	// 				// import {main} from "../src/components/assets/js/up.js"
-	// 				main().catch((err) => console.error("Error running sample:", err.message));
-	// 				sleep(10000);
+						//
+						// find the eye pupils for each detected face
+						// starting regions for localization are initialized based on the face bounding box
+						// (parameters are set empirically)
+						// first eye
+						// r = dets[i][0] - 0.075*dets[i][2];
+						// c = dets[i][1] - 0.175*dets[i][2];
+						// s = 0.35*dets[i][2];
+						// [r, c] = do_puploc(r, c, s, 63, image)
+						// if(r>=0 && c>=0)
+						// {
+						// 	ctx.beginPath();
+						// 	ctx.arc(c, r, 1, 0, 2*Math.PI, false);
+						// 	ctx.lineWidth = 3;
+						// 	ctx.strokeStyle = 'red';
+						// 	ctx.stroke();
+							
+							
+						// }
+						// // second eye
+						// r = dets[i][0] - 0.075*dets[i][2];
+						// c = dets[i][1] + 0.175*dets[i][2];
+						// s = 0.35*dets[i][2];
+						// [r, c] = do_puploc(r, c, s, 63, image)
+						// if(r>=0 && c>=0)
+						// {
+						// 	ctx.beginPath();
+						// 	ctx.arc(c, r, 1, 0, 2*Math.PI, false);
+						// 	ctx.lineWidth = 3;
+						// 	ctx.strokeStyle = 'red';
+						// 	ctx.stroke();
+						// }
+                        snapshot();
+                       
+                        sleep(8000);
 
-	// 			}
-	// 	}
-	// 	/*
-	// 		(5) instantiate camera handling (see https://github.com/cbrandolino/camvas)
-	// 	*/
-	// 	var mycamvas = new camvas(ctx, processfn);
-	// 	/*
-	// 		(6) it seems that everything went well
-	// 	*/
-	// 	initialized = true;
-	// }
+					}
+			}
+			/*
+				(5) instantiate camera handling (see https://github.com/cbrandolino/camvas)
+			*/
+			var mycamvas = new camvas(ctx, processfn);
+			/*
+				(6) it seems that everything went well
+			*/
+			initialized = true;
+            
+		}
+        
 
 	</script>
 	
