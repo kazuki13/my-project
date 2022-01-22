@@ -1,6 +1,9 @@
 <template>
   <div id="app">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+   
+    
+    <HelloWorld @click="button_callback('uplode')"></HelloWorld>
+
   </div>
 </template>
 
@@ -13,6 +16,22 @@ export default {
   name: 'App',
   components: {
     HelloWorld
+  },
+  methods: {
+
+    canvas(message) {
+      alert(message);
+    },
+    snapshot(message) {
+      alert(message);
+    },
+    sleep(message) {
+      alert(message);
+    },
+    button_callback(message) {
+      alert(message);
+    }
+
   }
 }
 </script>
