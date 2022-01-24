@@ -10,7 +10,131 @@
   </body>
 </html>
 <script>
+	const FILE_PATH = `face.png`;
+	const { BlobServiceClient, StorageSharedKeyCredential, readFileSync} = require('@azure/storage-blob');
+	const { v1: uuidv1} = require('uuid');
+	function snapshot() {
+	console.info('スナップショットをとるよ！');
 
+	var videoElement = document.querySelector('video');
+	var canvasElement = document.querySelector('canvas');
+	var context = canvasElement.getContext('2d');
+
+	context.drawImage(videoElement, 0, 0, videoElement.width, videoElement.height);
+	document.querySelector('img').src = canvasElement.toDataURL('image/png');
+	async function  main() {
+
+			console.log('Azure Blob storage v12 - JavaScript quickstart sample');
+			// Quick start code goes here
+
+			// const AZURE_STORAGE_CONNECTION_STRING = process.env.AZURE_STORAGE_CONNECTION_STRING;
+			// const blobServiceClient = BlobServiceClient.fromConnectionString(AZURE_STORAGE_CONNECTION_STRING);
+			const STORAGE_ACCOUNT_NAME = process.env.AZURE_STORAGE_ACCOUNT_NAME || "kaopass2";
+			const ACCOUNT_ACCESS_KEY = process.env.AZURE_STORAGE_ACCOUNT_ACCESS_KEY || "ETuD27jryBN3Ytt3DAXxYaQX0/qgr3D8OAzJlKzN2w1K4nPnytpjsxhtJ7bIM6Rknd7ke5vMlswigxrIvW5LlA==";;
+			// const account = process.env.ACCOUNT_NAME || "kaopass2";
+			// const sharedKeyCredential = new StorageSharedKeyCredential(account, accountKey);
+			//   const blobServiceClient = new BlobServiceClient(
+			//     `https://${account}.blob.core.windows.net`,
+			//     sharedKeyCredential
+			// );
+				// const credentials  = new StorageSharedKeyCredential(STORAGE_ACCOUNT_NAME, ACCOUNT_ACCESS_KEY);
+				
+				const blobServiceClient = new BlobServiceClient(
+					`https://${STORAGE_ACCOUNT_NAME}.blob.core.windows.net`,
+					STORAGE_ACCOUNT_NAME, ACCOUNT_ACCESS_KEY
+				);
+			console.log("OK!")
+			// Create a unique name for the blob
+			const blobName = "test" +  '.png';
+
+			console.log(blobName)
+			// Get a block blob client
+
+			const containerName = `image`;
+			const containerClient = blobServiceClient.getContainerClient(containerName);
+
+			console.log('\nUploading to Azure storage as blob:\n\t', containerName);
+
+			// Upload data to the blob
+			const content = FILE_PATH; //変換したbase64文字列を使う
+			
+			const blockBlobClient = containerClient.getBlockBlobClient(blobName);
+			console.log("OK!2")
+			const uploadBlobResponse = await blockBlobClient.upload(content, Buffer.byteLength(content));
+			console.log("OK!3")
+			console.log(`Upload block blob ${blobName} successfully`, uploadBlobResponse.requestId);
+
+			}		
+			main().then(() => console.log('Done')).catch((ex) => console.log(ex.message));
+}
+	// async function  main() {
+
+	// 		console.log('Azure Blob storage v12 - JavaScript quickstart sample');
+	// 		// Quick start code goes here
+
+	// 		// const AZURE_STORAGE_CONNECTION_STRING = process.env.AZURE_STORAGE_CONNECTION_STRING;
+	// 		// const blobServiceClient = BlobServiceClient.fromConnectionString(AZURE_STORAGE_CONNECTION_STRING);
+	// 		const STORAGE_ACCOUNT_NAME = process.env.AZURE_STORAGE_ACCOUNT_NAME || "kaopass2";
+	// 		const ACCOUNT_ACCESS_KEY = process.env.AZURE_STORAGE_ACCOUNT_ACCESS_KEY || "ETuD27jryBN3Ytt3DAXxYaQX0/qgr3D8OAzJlKzN2w1K4nPnytpjsxhtJ7bIM6Rknd7ke5vMlswigxrIvW5LlA==";;
+	// 		// const account = process.env.ACCOUNT_NAME || "kaopass2";
+	// 		// const accountKey = process.env.ACCOUNT_KEY || "ETuD27jryBN3Ytt3DAXxYaQX0/qgr3D8OAzJlKzN2w1K4nPnytpjsxhtJ7bIM6Rknd7ke5vMlswigxrIvW5LlA==";
+	// 		// const sharedKeyCredential = new StorageSharedKeyCredential(account, accountKey);
+	// 		//   const blobServiceClient = new BlobServiceClient(
+	// 		//     `https://${account}.blob.core.windows.net`,
+	// 		//     sharedKeyCredential
+	// 		// );
+	// 			// const credentials  = new StorageSharedKeyCredential(STORAGE_ACCOUNT_NAME, ACCOUNT_ACCESS_KEY);
+				
+	// 			const blobServiceClient = new BlobServiceClient(
+	// 				`https://${STORAGE_ACCOUNT_NAME}.blob.core.windows.net`,
+	// 				STORAGE_ACCOUNT_NAME, ACCOUNT_ACCESS_KEY
+	// 			);
+	// 		console.log("OK!")
+	// 		// Create a unique name for the blob
+	// 		const blobName = "test" +  '.png';
+	// 		console.log(blobName)
+	// 		// Get a block blob client
+
+	// 		const containerName = `image`;
+	// 		const containerClient = blobServiceClient.getContainerClient(containerName);
+
+	// 		console.log('\nUploading to Azure storage as blob:\n\t', containerName);
+
+	// 		// Upload data to the blob
+	// 		const content = FILE_PATH; //変換したbase64文字列を使う
+			
+	// 		const blockBlobClient = containerClient.getBlockBlobClient(blobName);
+	// 		const uploadBlobResponse = await blockBlobClient.upload(content, Buffer.byteLength(content));
+	// 		console.log(`Upload block blob ${blobName} successfully`, uploadBlobResponse.requestId);
+	// 		       }
+			// const data = 'Hello, World!';
+			// const uploadBlobResponse = await containerClient.upload(data, data.length);
+			// console.log("Blob was uploaded successfully. requestId: ", uploadBlobResponse.requestId);
+			
+			// 'use strict';
+			// const { BlobServiceClient, StorageSharedKeyCredential } = require("@azure/storage-blob");
+			// async function main() {
+			// 	// Enter your storage account name and shared key
+			// 	const account = process.env.ACCOUNT_NAME || "kaopass2";
+			// 	const accountKey = process.env.ACCOUNT_KEY || "ETuD27jryBN3Ytt3DAXxYaQX0/qgr3D8OAzJlKzN2w1K4nPnytpjsxhtJ7bIM6Rknd7ke5vMlswigxrIvW5LlA==";
+
+			// 	const sharedKeyCredential = new StorageSharedKeyCredential(account, accountKey);
+			// 	const blobServiceClient = new BlobServiceClient(
+			// 		`https://${account}.blob.core.windows.net`,
+			// 		sharedKeyCredential
+			// 	);
+			// 	console.log("OK!");
+			// 	//コンテナを作成した名前に指定
+			// 	const containerName = `image`;
+			// 	const containerClient = blobServiceClient.getContainerClient(containerName);
+			// 	console.log(containerName)
+			// 	// Create a blob
+			// 	const content = canvasElement; //変換したbase64文字列を使う
+			// 	const blobName = "test" +  '.png';
+			// 	const blockBlobClient = containerClient.getBlockBlobClient(blobName);
+			// 	const uploadBlobResponse = await blockBlobClient.upload(content, Buffer.byteLength(content));
+			// 	console.log(`Upload block blob ${blobName} successfully`, uploadBlobResponse.requestId);
+			// 	}
 
 	export default {	
 	
@@ -211,7 +335,9 @@
 			//今日の日付データを変数に格納
 					//変数は"today"とする
 					
-				
+
+
+			
 
 			button_callback() {
 
@@ -280,7 +406,7 @@
 						// check the detection score
 						// if it's above the threshold, draw it
 						// (the constant 50.0 is empirical: other cascades might require a different one)
-						if(dets[i][3]>60.0)
+						if(dets[i][3]>100.0)
 						{
 							// var r, c, s;
 							// ctx.beginPath();
@@ -326,20 +452,19 @@
 							snapshot();
 								// import { videoElement } from './aaa.js';
 
+							
 
+
+							
 							// take_picture();
 
 							sleep(8000);
 
 						}
 				}
-				/*
-					(5) instantiate camera handling (see https://github.com/cbrandolino/camvas)
-				*/
+
 				var mycamvas = new camvas(ctx, processfn);
-				/*
-					(6) it seems that everything went well
-				*/
+
 				initialized = true;
 				
 			}
