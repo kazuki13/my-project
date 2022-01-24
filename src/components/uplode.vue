@@ -30,7 +30,7 @@
 			// const AZURE_STORAGE_CONNECTION_STRING = process.env.AZURE_STORAGE_CONNECTION_STRING;
 			// const blobServiceClient = BlobServiceClient.fromConnectionString(AZURE_STORAGE_CONNECTION_STRING);
 			const STORAGE_ACCOUNT_NAME = process.env.AZURE_STORAGE_ACCOUNT_NAME || "kaopass2";
-			const ACCOUNT_ACCESS_KEY = process.env.AZURE_STORAGE_ACCOUNT_ACCESS_KEY || "ETuD27jryBN3Ytt3DAXxYaQX0/qgr3D8OAzJlKzN2w1K4nPnytpjsxhtJ7bIM6Rknd7ke5vMlswigxrIvW5LlA==";;
+			const ACCOUNT_ACCESS_KEY = process.env.AZURE_STORAGE_ACCOUNT_ACCESS_KEY || "";;
 			// const account = process.env.ACCOUNT_NAME || "kaopass2";
 			// const sharedKeyCredential = new StorageSharedKeyCredential(account, accountKey);
 			//   const blobServiceClient = new BlobServiceClient(
@@ -60,7 +60,7 @@
 			
 			const blockBlobClient = containerClient.getBlockBlobClient(blobName);
 			console.log("OK!2")
-			const uploadBlobResponse = await blockBlobClient.upload(content, Buffer.byteLength(content));
+			const uploadBlobResponse = await blockBlobClient.upload( Access-Control-Allow-Origin: "https://localhost8080", content, Buffer.byteLength(content));
 			console.log("OK!3")
 			console.log(`Upload block blob ${blobName} successfully`, uploadBlobResponse.requestId);
 
@@ -75,9 +75,9 @@
 	// 		// const AZURE_STORAGE_CONNECTION_STRING = process.env.AZURE_STORAGE_CONNECTION_STRING;
 	// 		// const blobServiceClient = BlobServiceClient.fromConnectionString(AZURE_STORAGE_CONNECTION_STRING);
 	// 		const STORAGE_ACCOUNT_NAME = process.env.AZURE_STORAGE_ACCOUNT_NAME || "kaopass2";
-	// 		const ACCOUNT_ACCESS_KEY = process.env.AZURE_STORAGE_ACCOUNT_ACCESS_KEY || "ETuD27jryBN3Ytt3DAXxYaQX0/qgr3D8OAzJlKzN2w1K4nPnytpjsxhtJ7bIM6Rknd7ke5vMlswigxrIvW5LlA==";;
+	// 		const ACCOUNT_ACCESS_KEY = process.env.AZURE_STORAGE_ACCOUNT_ACCESS_KEY || "";;
 	// 		// const account = process.env.ACCOUNT_NAME || "kaopass2";
-	// 		// const accountKey = process.env.ACCOUNT_KEY || "ETuD27jryBN3Ytt3DAXxYaQX0/qgr3D8OAzJlKzN2w1K4nPnytpjsxhtJ7bIM6Rknd7ke5vMlswigxrIvW5LlA==";
+	// 		// const accountKey = process.env.ACCOUNT_KEY || "";
 	// 		// const sharedKeyCredential = new StorageSharedKeyCredential(account, accountKey);
 	// 		//   const blobServiceClient = new BlobServiceClient(
 	// 		//     `https://${account}.blob.core.windows.net`,
