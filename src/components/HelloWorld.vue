@@ -15,7 +15,7 @@ async function main() {
     // and reloaded to take the environment variable into account.
   // Fill in following settings before running this sample
   const account = process.env.ACCOUNT_NAME || "pass";
-  const accountSas = process.env.ACCOUNT_SAS || "";
+  const accountSas = process.env.ACCOUNT_SAS || "https://pass.blob.core.windows.net/image?sv=2020-10-02&st=2022-02-05T12%3A50%3A33Z&se=2022-02-06T12%3A50%3A33Z&sr=c&sp=racwdxlt&sig=JyX4nkKgaFBVxapJrizL2LQ0gduCv9Eokiy2Q69D5e8%3D";
   const localFilePath = "face.png";
 
   const pipeline = newPipeline(new AnonymousCredential(), {
